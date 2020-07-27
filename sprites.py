@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.acc = vec(0, 0)
 
     def update(self):
-        self.acc = vec(0, 0)
+        self.acc = vec(0, 0.5)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.acc.x = -PLAYER_ACC
@@ -24,11 +24,22 @@ class Player(pygame.sprite.Sprite):
             self.acc.x = PLAYER_ACC
 
         # apply friction
-        self.acc += self.vel * PLAYER_FRICTION
+        self.acc.x += self.vel.x * PLAYER_FRICTION
+
         # equations of motion
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
         # stop from running of the left side of the screen
+        if self.pos.x < 0:
+            self.pos.x = 0
+        self.rect.midbottom = self.pos
 
-        self.rect.center = self.pos
+class Platform(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((width, height))
+        self.image.fill(GREEN)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y

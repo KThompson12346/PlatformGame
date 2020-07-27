@@ -18,3 +18,4 @@ YELLOW = (255, 255, 0)
 # player properties
 PLAYER_ACC = 0.5
 PLAYER_FRICTION = -0.12
+PLAYER_GRAV = 0.8

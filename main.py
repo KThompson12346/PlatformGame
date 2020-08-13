@@ -2,6 +2,7 @@ import pygame
 import random
 from settings import *
 from sprites import *
+from camera import *
 from os import path
 class Game:
      def __init__(self):
@@ -28,6 +29,9 @@ class Game:
          self.platforms.add(p1)
          self.all_sprites.add(p2)
          self.platforms.add(p2)
+
+         self.camera = Camera(WIDTH, HEIGHT)
+
          self.run()
 
      def run(self): # Game Loop - runs the game
@@ -46,6 +50,8 @@ class Game:
               if hits:
                    self.player.pos.y = hits[0].rect.top
                    self.player.vel.y = 0
+         # screen moves with player
+         self.camera.update(self.player)
 
      def events(self): # Game loop - events
          for event in pygame.event.get():
@@ -59,7 +65,9 @@ class Game:
 
      def draw(self): # Game loop - draw
          self.screen.fill(RED)
-         self.all_sprites.draw(self.screen)
+         #self.all_sprites.draw(self.screen)
+         for sprite in self.all_sprites:
+              self.screen.blit(sprite.image, self.camera.apply(sprite))
          pygame.display.flip()
 
      def start_screen(self):

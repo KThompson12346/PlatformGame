@@ -29,9 +29,7 @@ class Game:
          self.platforms.add(p1)
          self.all_sprites.add(p2)
          self.platforms.add(p2)
-
-         self.camera = Camera(WIDTH, HEIGHT)
-
+         self.camera = Camera(WIDTH, HEIGHT) # creates the camera with WIDTH and HEIGHT of the screen
          self.run()
 
      def run(self): # Game Loop - runs the game
@@ -51,7 +49,7 @@ class Game:
                    self.player.pos.y = hits[0].rect.top
                    self.player.vel.y = 0
          # screen moves with player
-         self.camera.update(self.player)
+         self.camera.update(self.player) # is the camera that tracks players movement
 
      def events(self): # Game loop - events
          for event in pygame.event.get():
@@ -67,7 +65,7 @@ class Game:
          self.screen.fill(RED)
          #self.all_sprites.draw(self.screen)
          for sprite in self.all_sprites:
-              self.screen.blit(sprite.image, self.camera.apply(sprite))
+              self.screen.blit(sprite.image, self.camera.apply(sprite)) # loops through the all_sprites group and blit's each sprite onto the screen 
          pygame.display.flip()
 
      def start_screen(self):

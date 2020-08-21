@@ -23,12 +23,10 @@ class Game:
          self.platforms = pygame.sprite.Group()
          self.player = Player(self)
          self.all_sprites.add(self.player)
-         p1 = Platform(0, HEIGHT - 50,  WIDTH, 50)
-         p2 = Platform(WIDTH / 2, HEIGHT * 1 / 2, 200, 30)
-         self.all_sprites.add(p1)
-         self.platforms.add(p1)
-         self.all_sprites.add(p2)
-         self.platforms.add(p2)
+         for plat in PLATFORM_LIST:
+             p = Platform(*plat)
+             self.all_sprites.add(p)
+             self.platforms.add(p)
          self.camera = Camera(WIDTH, HEIGHT) # creates the camera with WIDTH and HEIGHT of the screen
          self.run()
 
@@ -48,6 +46,7 @@ class Game:
               if hits:
                    self.player.pos.y = hits[0].rect.top
                    self.player.vel.y = 0
+         
          # screen moves with player
          self.camera.update(self.player) # is the camera that tracks players movement
 
@@ -65,7 +64,7 @@ class Game:
          self.screen.fill(RED)
          #self.all_sprites.draw(self.screen)
          for sprite in self.all_sprites:
-              self.screen.blit(sprite.image, self.camera.apply(sprite)) # loops through the all_sprites group and blit's each sprite onto the screen 
+              self.screen.blit(sprite.image, self.camera.apply(sprite)) # loops through the all_sprites group and blit's each sprite onto the screen
          pygame.display.flip()
 
      def start_screen(self):

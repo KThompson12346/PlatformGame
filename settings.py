@@ -15,6 +15,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
+# Starting Platforms:
+PLATFORM_LIST = [(0, HEIGHT - 50,  WIDTH, 50), (WIDTH / 2, HEIGHT * 1 / 2, 200, 30), (WIDTH + 150, HEIGHT - 50, WIDTH, 50)]
 # player properties
 PLAYER_ACC = 0.5
 PLAYER_FRICTION = -0.12

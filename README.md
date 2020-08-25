@@ -1,2 +1,2 @@
 # PlatformGame
-A platform game written in python
+A platform game written in Python/Pygame

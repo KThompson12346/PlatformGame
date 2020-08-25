@@ -40,13 +40,19 @@ class Game:
 
      def update(self): # Game loop - update
          self.all_sprites.update()
-         # collision with a platform
+         # collision with top of platform
          if self.player.vel.y > 0:
-              hits = pygame.sprite.spritecollide(self.player, self.platforms, False)
+              hits = pygame.sprite.spritecollide(self.player, self.platforms, False) # returns a list of platform sprites that hit the player
               if hits:
                    self.player.pos.y = hits[0].rect.top
                    self.player.vel.y = 0
-         
+         # collision with the bottom of a platform
+         if self.player.vel.y < 0:
+              hits = pygame.sprite.spritecollide(self.player, self.platforms, False)
+              if hits:
+                   self.player.top = hits[0].rect.bottom
+                   self.player.vel.y = -self.player.vel.y
+
          # screen moves with player
          self.camera.update(self.player) # is the camera that tracks players movement
 

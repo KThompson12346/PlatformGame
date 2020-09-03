@@ -19,4 +19,4 @@ class Camera:
         x = min(0, x) # left
         y = min(0, y) # top
         y = max(-(self.height - HEIGHT), y) # bottom
-        self.camera = pygame.Rect(x, y, self.width, self.height) # adjusts the camera's rectangle with the new x and y 
+        self.camera = pygame.Rect(x, y, self.width, self.height) # adjusts the camera's rectangle with the new x and y

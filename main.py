@@ -40,19 +40,6 @@ class Game:
 
      def update(self): # Game loop - update
          self.all_sprites.update()
-         # collision with top of platform
-         if self.player.vel.y > 0:
-              hits = pygame.sprite.spritecollide(self.player, self.platforms, False) # returns a list of platform sprites that hit the player
-              if hits:
-                   self.player.pos.y = hits[0].rect.top
-                   self.player.vel.y = 0
-         # collision with the bottom of a platform
-         if self.player.vel.y < 0:
-              hits = pygame.sprite.spritecollide(self.player, self.platforms, False)
-              if hits:
-                   self.player.top = hits[0].rect.bottom
-                   self.player.vel.y = -self.player.vel.y
-
          # screen moves with player
          self.camera.update(self.player) # is the camera that tracks players movement
 
@@ -62,15 +49,13 @@ class Game:
                   if self.playing:
                       self.playing = False
                   self.running = False
-             if event.type == pygame.KEYDOWN:
-                  if event.key == pygame.K_SPACE:
-                    self.player.jump()
+             self.player.events(event)
 
      def draw(self): # Game loop - draw
          self.screen.fill(RED)
-         #self.all_sprites.draw(self.screen)
          for sprite in self.all_sprites:
-              self.screen.blit(sprite.image, self.camera.apply(sprite)) # loops through the all_sprites group and blit's each sprite onto the screen
+               # loops through the all_sprites group and blit's each sprite onto the screen
+              self.screen.blit(sprite.image, self.camera.apply(sprite))
          pygame.display.flip()
 
      def start_screen(self):

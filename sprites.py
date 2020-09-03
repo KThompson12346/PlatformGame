@@ -15,14 +15,18 @@ class Player(pygame.sprite.Sprite):
         self.pos = vec(WIDTH / 2, HEIGHT / 2)
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
+        self.on_ground = True
 
     def jump(self):
         # jump only if on a platform
-        self.rect.x += 1
-        hits = pygame.sprite.spritecollide(self, self.game.platforms, False)
-        self.rect.x -= 1
-        if hits:
+        if self.on_ground:
             self.vel.y = -20
+            self.on_ground = False
+
+    def events(self, event):
+        if event.type == pygame.KEYDOWN:
+               if event.key == pygame.K_SPACE:
+                   self.jump()
 
     def update(self):
         self.acc = vec(0, PLAYER_GRAV)
@@ -37,12 +41,44 @@ class Player(pygame.sprite.Sprite):
 
         # equations of motion
         self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
+        #self.pos += self.vel + 0.5 * self.acc
 
-        # stop from running of the left side of the screen
-        if self.pos.x < 0:
-            self.pos.x = 0
-        self.rect.midbottom = self.pos
+        # Side collisions
+        self.pos.x += self.vel.x + 0.5 * self.acc.x
+        self.rect.centerx = self.pos.x
+
+        # Stop from going of the left side of screen
+        if self.rect.left < 0:
+            self.rect.left = 0
+            self.pos.x = self.rect.centerx
+
+        hits = pygame.sprite.spritecollide(self, self.game.platforms, False)
+
+        if hits:
+            if self.vel.x > 0: # moving right
+                self.rect.right = hits[0].rect.left
+                self.pos.x = self.rect.centerx
+                self.vel.x = 0
+            elif self.vel.x < 0: # moving left
+                self.rect.left = hits[0].rect.right
+                self.pos.x = self.rect.centerx
+                self.vel.x = 0
+
+        # top and bottom collisions
+        self.pos.y += self.vel.y + 0.5 * self.acc.y
+        self.rect.centery = self.pos.y
+        hits = pygame.sprite.spritecollide(self, self.game.platforms, False)
+        if hits:
+            if self.vel.y > 0: # collision with the top of a platform
+                self.rect.bottom = hits[0].rect.top
+                self.pos.y = self.rect.centery
+                self.vel.y = 0
+                self.on_ground = True
+            elif self.vel.y < 0: # collision with the bottom of a platform
+                self.rect.top = hits[0].rect.bottom
+                self.pos.y = self.rect.centery
+                self.vel.y = 0
+
 
 class Platform(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height):
